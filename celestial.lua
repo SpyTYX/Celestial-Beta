@@ -1111,6 +1111,7 @@ function Library:tab(options)
 			selectedTab = tabButton
 			tab.Visible = true
 			tabButton.BackgroundTransparency = 0
+			Library.UrlLabel.Text = Library.Url .. "/" .. options.Name:lower()
 		end)
 
 		quickAccessButton.MouseEnter:connect(function()
