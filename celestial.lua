@@ -714,7 +714,7 @@ function Library:create(options)
 	local profile = homePage:object("Frame", {
 		AnchorPoint = Vector2.new(0, .5),
 		Theme = {BackgroundColor3 = "Secondary"},
-		Size = UDim2.new(1.2, -20, 0, 125)
+		Size = UDim2.new(1.2, -20, 0, 100)
 	}):round(7)
 
 	local profilePictureContainer = profile:object("ImageLabel", {
