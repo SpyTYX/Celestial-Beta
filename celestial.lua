@@ -1112,6 +1112,34 @@ function Library:tab(options)
 			tab.Visible = true
 			tabButton.BackgroundTransparency = 0
 		end)
+
+		quickAccessButton.MouseEnter:connect(function()
+			quickAccessButton:tween{BackgroundColor3 = Library.CurrentTheme.Tertiary}
+		end)
+
+		quickAccessButton.MouseLeave:connect(function()
+			quickAccessButton:tween{BackgroundColor3 = Library.CurrentTheme.Secondary}
+		end)
+
+		quickAccessButton.MouseButton1Click:connect(function()
+			if not tabButton.Visible then
+				tabButton.Parent = self.navigation.AbsoluteObject
+				tabButton.Size = UDim2.new(0, 50, tabButton.Size.Y.Scale, tabButton.Size.Y.Offset)
+				tabButton.Visible = true
+				tabButton:fade(false, Library.CurrentTheme.Main, 0.1)			
+				tabButton:tween({Size = UDim2.new(0, 125, tabButton.Size.Y.Scale, tabButton.Size.Y.Offset), Length = 0.1})
+				for _, tabInfo in next, self.Tabs do
+					local page = tabInfo[1]
+					local button = tabInfo[2]
+					page.Visible = false
+				end
+				selectedTab:tween{BackgroundTransparency = ((selectedTab == tabButton) and 0.15) or 1}
+				selectedTab = tabButton
+				tab.Visible = true
+				tabButton.BackgroundTransparency = 0
+				Library.UrlLabel.Text = Library.Url .. "/" .. options.Name:lower()
+			end
+		end)
 	end
 
 	local tabButtonText = tabButton:object("TextLabel", {
