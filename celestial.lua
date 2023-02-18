@@ -1114,6 +1114,50 @@ function Library:tab(options)
 		end)
 	end
 
+	tabButtonClose.MouseButton1Click:connect(function()
+		tabButton:fade(true, Library.CurrentTheme.Main, 0.1)
+		tabButton:tween({Size = UDim2.new(0, 50, tabButton.Size.Y.Scale, tabButton.Size.Y.Offset), Length = 0.1}, function()
+			tabButton.Visible = false
+			tab.Visible = false
+			tabButton.Parent = self.nilFolder.AbsoluteObject
+			wait()
+		end)
+
+		local visible = {}
+		for _, tab in next, self.Tabs do
+			if not tab[2] == selectedTab then tab[1].Visible = false end
+			if tab[2].Visible then
+				visible[#visible+1] = tab
+			end
+		end
+
+		local lastTab = visible[#visible]
+
+		if selectedTab == self.homeButton then
+			tab.Visible = false
+		elseif #visible == 2 then
+			selectedTab.Visible = false
+			tab.Visible = false
+			self.homePage.Visible = true
+			self.homeButton:tween{BackgroundTransparency = 0.15}
+			selectedTab = self.homeButton
+			Library.UrlLabel.Text = Library.Url .. "/home"	
+		elseif tabButton == lastTab[2] then
+			lastTab = visible[#visible-1]
+			tab.Visible = false
+			lastTab[2]:tween{BackgroundTransparency = 0.15}
+			lastTab[1].Visible = true
+			selectedTab = lastTab[2]
+			Library.UrlLabel.Text = Library.Url .. "/" .. lastTab[3]:lower()
+		else
+			tab.Visible = false
+			lastTab[2]:tween{BackgroundTransparency = 0.15}
+			lastTab[1].Visible = true
+			selectedTab = lastTab[2]
+			Library.UrlLabel.Text = Library.Url .. "/" .. lastTab[3]:lower()
+		end
+	end)
+
 	return setmetatable({
 		statusText = self.statusText,
 		container = tab,
